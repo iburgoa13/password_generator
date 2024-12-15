@@ -1,0 +1,37 @@
+<div class="container mx-auto p-6">
+  <h1 class="text-2xl font-bold mb-4"><%= @page_title %></h1>
+
+  <!-- Botón para crear un nuevo generador -->
+  <div class="mb-4">
+    <%= live_redirect "New Generator",
+      to: Routes.generator_live_path(@socket, :new),
+      class: "bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+    %>
+  </div>
+
+  <!-- Lista de generadores -->
+  <ul class="space-y-2">
+    <%= for generator <- @streams.passwords do %>
+      <li class="border p-4 rounded flex items-center justify-between">
+        <div>
+          <span class="text-lg font-medium">Longitud:</span>
+          <span class="text-gray-700"><%= generator.longitud %></span>
+        </div>
+        <div class="space-x-2">
+          <!-- Botón de editar -->
+          <%= live_redirect "Edit",
+            to: Routes.generator_live_path(@socket, :edit, generator.id),
+            class: "bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600"
+          %>
+          <!-- Botón de eliminar -->
+          <%= link "Delete",
+            to: "#",
+            phx_click: "delete",
+            phx_value_id: generator.id,
+            class: "bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
+          %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</div>

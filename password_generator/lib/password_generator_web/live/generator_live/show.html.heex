@@ -1,0 +1,25 @@
+<.header>
+  Generator {@generator.id}
+  <:subtitle>This is a generator record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/passwords/#{@generator}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit generator</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+</.list>
+
+<.back navigate={~p"/passwords"}>Back to passwords</.back>
+
+<.modal :if={@live_action == :edit} id="generator-modal" show on_cancel={JS.patch(~p"/passwords/#{@generator}")}>
+  <.live_component
+    module={PasswordGeneratorWeb.GeneratorLive.FormComponent}
+    id={@generator.id}
+    title={@page_title}
+    action={@live_action}
+    generator={@generator}
+    patch={~p"/passwords/#{@generator}"}
+  />
+</.modal>

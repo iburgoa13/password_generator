@@ -27,6 +27,7 @@ defmodule PasswordGeneratorWeb do
       import Plug.Conn
       import Phoenix.Controller
       import Phoenix.LiveView.Router
+
     end
   end
 
@@ -97,7 +98,23 @@ defmodule PasswordGeneratorWeb do
       unquote(verified_routes())
     end
   end
+  def view do
+    quote do
+      use Phoenix.View,
+        root: "lib/password_generator_web/templates",
+        namespace: PasswordGeneratorWeb
 
+      # Import convenience functions from controllers
+      import Phoenix.Controller,
+        only: [get_flash: 1, get_flash: 2, view_module: 1, view_template: 1]
+
+      # Include all HTML functionality (forms, tags, etc)
+      use Phoenix.HTML
+
+      # Importar Phoenix.HTML.Link para link/2
+      import Phoenix.HTML.Link
+    end
+  end
   def verified_routes do
     quote do
       use Phoenix.VerifiedRoutes,

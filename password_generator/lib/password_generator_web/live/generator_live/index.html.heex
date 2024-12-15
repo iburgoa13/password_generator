@@ -1,0 +1,40 @@
+<.header>
+  Listing Passwords
+  <:actions>
+    <.link patch={~p"/passwords/new"}>
+      <.button>New Generator</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="passwords"
+  rows={@streams.passwords}
+  row_click={fn {_id, generator} -> JS.navigate(~p"/passwords/#{generator}") end}
+>
+  <:action :let={{_id, generator}}>
+    <div class="sr-only">
+      <.link navigate={~p"/passwords/#{generator}"}>Show</.link>
+    </div>
+    <.link patch={~p"/passwords/#{generator}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, generator}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: generator.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="generator-modal" show on_cancel={JS.patch(~p"/passwords")}>
+  <.live_component
+    module={PasswordGeneratorWeb.GeneratorLive.FormComponent}
+    id={@generator.id || :new}
+    title={@page_title}
+    action={@live_action}
+    generator={@generator}
+    patch={~p"/passwords"}
+  />
+</.modal>

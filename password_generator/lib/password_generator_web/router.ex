@@ -17,8 +17,11 @@ defmodule PasswordGeneratorWeb.Router do
   scope "/", PasswordGeneratorWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/passwords", GeneratorLive.Index, :index
+    live "/passwords/new", GeneratorLive.Index, :new
+    live "/passwords/:id/edit", GeneratorLive.Index, :edit
   end
+
 
   # Other scopes may use custom stacks.
   # scope "/api", PasswordGeneratorWeb do
